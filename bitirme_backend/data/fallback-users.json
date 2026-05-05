@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Test User",
+    "email": "testuser@example.com",
+    "password": "$2b$10$KkeETOvQuGocxEgf1cB6YuETETYStreF/jQuUqhAebZR2PJZSukr2",
+    "allergies": []
+  },
+  {
+    "id": 2,
+    "name": "Test User",
+    "email": "test@example.com",
+    "password": "$2b$10$KheE5xgAja47S47NyZX2VejYxrtOnl7f5z7FSWsKyfH2NXRIX9HYq",
+    "allergies": []
+  },
+  {
+    "id": 3,
+    "name": "Test User 2",
+    "email": "test2@example.com",
+    "password": "$2b$10$ciSPNlqg7xKfs.4svWOiqOiJAnnRE4lJwG92ZMbhVxPJd.alUyxmi",
+    "allergies": []
+  },
+  {
+    "id": 4,
+    "name": "Pınar Güzelöz",
+    "email": "pnarguzeloz@gmail.com",
+    "password": "$2b$10$HiZ6uCylqcsJmiYgdK/iOOwrXURPKw3hOUrl4gJHe9LjxhOUZeBti",
+    "allergies": []
+  }
+]
