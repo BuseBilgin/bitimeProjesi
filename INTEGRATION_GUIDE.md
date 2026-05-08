@@ -354,7 +354,7 @@ JWT_SECRET=your_super_secret_key_change_this_in_production
 JWT_REFRESH_SECRET=your_refresh_secret
 
 # CORS
-CORS_ORIGIN=http://localhost:3000,http://localhost:8081
+CORS_ORIGIN=http://localhost:3004,http://localhost:8081
 
 # OpenFDA
 OPENFDA_API_URL=https://api.fda.gov/drug

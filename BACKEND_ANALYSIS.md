@@ -482,7 +482,7 @@ const corsOrigins = process.env.CORS_ORIGIN
 ```javascript
 const corsOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(',').map((origin) => origin.trim())
-  : ['http://localhost:3000', 'http://localhost:8081']; // Explicit whitelist
+  : ['http://localhost:3004', 'http://localhost:8081']; // Explicit whitelist
 
 app.use(cors({
   origin: corsOrigins,
