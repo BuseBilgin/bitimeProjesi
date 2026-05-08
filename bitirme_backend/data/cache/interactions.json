@@ -1,0 +1,11 @@
+{
+  "interaction:ranitidine||ventolin": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between ventolin and ranitidine detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778251968137
+  }
+}
