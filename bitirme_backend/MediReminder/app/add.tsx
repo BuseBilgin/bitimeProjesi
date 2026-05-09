@@ -228,7 +228,7 @@ export default function AddMedicine() {
             <View style={styles.progressStep} />
             <View style={styles.progressStep} />
             <View style={styles.progressStep} />
-            
+            <View style={styles.progressStep} />
           </View>
           
           <View style={styles.titleRow}>

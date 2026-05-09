@@ -8,16 +8,16 @@ const expoApiUrl = expoHost ? `http://${expoHost}:3004/api` : null;
 const defaultApiUrls = Platform.select({
   android: [
     expoApiUrl,
+    'http://192.168.1.136:3004/api',
     'http://10.0.2.2:3004/api', // Android emulator
-    'http://192.168.1.29:3004/api',
-    'http://192.168.1.100:3004/api', // Common router IP
+    'http://192.168.1.100:3004/api',
     'http://localhost:3004/api',
   ],
   default: [
     expoApiUrl,
+    'http://192.168.1.136:3004/api',
     'http://127.0.0.1:3004/api', // iOS simulator
     'http://localhost:3004/api',
-    'http://192.168.1.29:3004/api',
     'http://192.168.1.100:3004/api',
   ],
 }) ?? [expoApiUrl, 'http://127.0.0.1:3004/api'];
@@ -46,23 +46,27 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
     ...(headers || {}),
   };
 
+  // POST/PUT/DELETE isteklerinde retry yapma — aynı backend'e iki kez yazma isteği gider
+  const isWriteRequest = rest.method && rest.method !== 'GET';
+  const urlsToTry = isWriteRequest ? [API_BASE_URLS[0]] : API_BASE_URLS;
+
   let lastError: unknown;
   const errors: { url: string; error: string }[] = [];
 
-  for (let i = 0; i < API_BASE_URLS.length; i++) {
-    const baseUrl = API_BASE_URLS[i];
-    
+  for (let i = 0; i < urlsToTry.length; i++) {
+    const baseUrl = urlsToTry[i];
+
     // Add delay between retries (except for first attempt)
     if (i > 0) {
       await sleep(RETRY_DELAY_MS);
     }
-    
+
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
     try {
-      console.log(`[API] Attempting ${i + 1}/${API_BASE_URLS.length}: ${baseUrl}${path}`);
-      
+      console.log(`[API] Attempting ${i + 1}/${urlsToTry.length}: ${baseUrl}${path}`);
+
       const response = await fetch(`${baseUrl}${path}`, {
         ...rest,
         headers: requestHeaders,
@@ -83,8 +87,8 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
       lastError = error;
       const errorMsg = error instanceof Error ? error.message : String(error);
       errors.push({ url: baseUrl, error: errorMsg });
-      console.log(`[API] Failed (${i + 1}/${API_BASE_URLS.length}): ${errorMsg}`);
-              
+      console.log(`[API] Failed (${i + 1}/${urlsToTry.length}): ${errorMsg}`);
+
       // Backend responded with an error (not a network error), so don't retry
       if (error instanceof Error && !isNetworkError(error)) {
         throw error;
@@ -194,8 +198,10 @@ export type MedicationDto = {
   active_ingredient: string;
   dosage?: string;
   frequency?: string;
+  schedule_time?: string;
   start_date?: string;
   end_date?: string | null;
+  note?: string;
 };
 
 export async function getMedicationsRequest(token: string) {
@@ -211,6 +217,8 @@ export type CreateMedicationPayload = {
   frequency?: string;
   start_date?: string;
   end_date?: string | null;
+  schedule_time?: string;
+  note?: string;
 };
 
 export async function createMedicationRequest(token: string, payload: CreateMedicationPayload) {
@@ -233,6 +241,22 @@ export async function searchMedicationsRequest(token: string, query: string) {
   }>(`/medications/search?query=${encodeURIComponent(query)}`, {
     method: 'GET',
     token,
+  });
+}
+
+export type UpdateMedicationPayload = {
+  dosage?: string;
+  frequency?: string;
+  schedule_time?: string;
+  start_date?: string;
+  note?: string;
+};
+
+export async function updateMedicationRequest(token: string, id: string, payload: UpdateMedicationPayload) {
+  return request<{ message: string }>(`/medications/${id}`, {
+    method: 'PUT',
+    token,
+    body: JSON.stringify(payload),
   });
 }
 

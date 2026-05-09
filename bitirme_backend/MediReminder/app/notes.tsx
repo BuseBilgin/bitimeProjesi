@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -9,11 +9,9 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
   ActivityIndicator,
   Alert,
-  FlatList
+  FlatList,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -31,13 +29,24 @@ export default function NotesScreen() {
   }>();
   const [note, setNote] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const savingRef = useRef(false);
   const [responseAlerts, setResponseAlerts] = useState<{ description?: string; severity?: string; type?: string }[] | null>(null);
   const [responseNote, setResponseNote] = useState<string | null>(null);
+  const [toastVisible, setToastVisible] = useState(false);
+
+  const showToast = (onDone: () => void) => {
+    setToastVisible(true);
+    setTimeout(() => {
+      setToastVisible(false);
+      onDone();
+    }, 1800);
+  };
 
   const medicationName = Array.isArray(params.name) ? params.name[0] : params.name || '';
   const dosage = Array.isArray(params.dosage) ? params.dosage[0] : params.dosage || '';
   const frequency = Array.isArray(params.frequency) ? params.frequency[0] : params.frequency || '';
   const startDate = Array.isArray(params.startDate) ? params.startDate[0] : params.startDate || '';
+  const scheduleTime = Array.isArray(params.scheduleTime) ? params.scheduleTime[0] : params.scheduleTime || '';
 
   const getSeverityColor = (severity?: string) => {
     switch (severity?.toLowerCase()) {
@@ -54,11 +63,13 @@ export default function NotesScreen() {
   };
 
   const handleSave = async () => {
+    if (savingRef.current) return;
     if (!medicationName) {
       Alert.alert('Hata', 'İlaç adı bulunamadı. Lütfen akışı tekrar başlatın.');
       return;
     }
 
+    savingRef.current = true;
     try {
       setIsSaving(true);
       const token = await getToken();
@@ -74,6 +85,7 @@ export default function NotesScreen() {
         dosage,
         frequency,
         start_date: startDate,
+        schedule_time: scheduleTime,
         note,
       });
 
@@ -81,18 +93,14 @@ export default function NotesScreen() {
         setResponseAlerts(response.alerts);
         setResponseNote(response.note || 'Uyarılar bulundu. Lütfen dikkatlice kontrol edin.');
       } else {
-        Alert.alert('Başarılı', response.note || 'İlaç eklendi.', [
-          {
-            text: 'Tamam',
-            onPress: () => router.replace('/medications')
-          }
-        ]);
+        showToast(() => router.replace('/medications'));
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : 'İlaç eklenemedi.';
       Alert.alert('Hata', message);
     } finally {
       setIsSaving(false);
+      savingRef.current = false;
     }
   };
 
@@ -101,8 +109,7 @@ export default function NotesScreen() {
       <StatusBar barStyle="dark-content" />
       
    
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KeyboardAvoidingView 
+      <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{ flex: 1 }}
         >
@@ -187,7 +194,13 @@ export default function NotesScreen() {
             )}
           </View>
         </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
+
+      {toastVisible && (
+        <View style={styles.toast} pointerEvents="none">
+          <Ionicons name="checkmark-circle" size={20} color="white" />
+          <Text style={styles.toastText}>İlaç eklendi</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
@@ -318,4 +331,22 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
   },
+
+  toast: {
+    position: 'absolute',
+    bottom: 40,
+    alignSelf: 'center',
+    backgroundColor: '#1A9E5C',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    gap: 8,
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+  },
+  toastText: { color: 'white', fontSize: 15, fontWeight: '700' },
 });

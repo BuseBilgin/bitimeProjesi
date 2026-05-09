@@ -2,6 +2,18 @@ const Medication = require('../models/Medication');
 const interactionChecker = require('../services/interactionChecker');
 const openFDAService = require('../services/openfda');
 
+function toDateString(val) {
+  if (!val) return null;
+  if (val instanceof Date) {
+    return `${val.getFullYear()}-${String(val.getMonth() + 1).padStart(2, '0')}-${String(val.getDate()).padStart(2, '0')}`;
+  }
+  return String(val).split('T')[0].split(' ')[0];
+}
+
+function formatMedication(med) {
+  return { ...med, start_date: toDateString(med.start_date), end_date: toDateString(med.end_date) };
+}
+
 class MedicationController {
   async addMedication(req, res) {
     try {
@@ -38,7 +50,7 @@ class MedicationController {
       const medicationId = await Medication.create({
         ...medicationData,
         user_id: userId,
-        start_date: new Date().toISOString().split('T')[0], // Bugünün tarihi
+        start_date: medicationData.start_date || (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; })(),
         end_date: null
       });
 
@@ -60,7 +72,7 @@ class MedicationController {
     try {
       const userId = req.user.id;
       const medications = await Medication.findByUserId(userId);
-      res.json(medications);
+      res.json(medications.map(formatMedication));
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -69,8 +81,12 @@ class MedicationController {
   async updateMedication(req, res) {
     try {
       const { id } = req.params;
-      const medicationData = req.body;
-      await Medication.update(id, medicationData);
+      const existing = await Medication.findById(id);
+      if (!existing) {
+        return res.status(404).json({ error: 'Medication not found' });
+      }
+      const merged = { ...existing, ...req.body };
+      await Medication.update(id, merged);
       res.json({ message: 'Medication updated' });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -308,7 +324,7 @@ class MedicationController {
       }
 
       res.json({
-        medications,
+        medications: medications.map(formatMedication),
         interactions,
         totalMedications: medications.length,
         totalInteractions: interactions.length,

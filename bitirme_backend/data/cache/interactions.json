@@ -1,11 +1,263 @@
 {
-  "interaction:ranitidine||ventolin": {
+  "interaction:naproxen||ranitidine": {
     "data": {
       "hasInteraction": true,
       "severity": "moderate",
-      "description": "Potential interaction between ventolin and ranitidine detected in adverse events data",
+      "description": "Potential interaction between ranitidine and naproxen detected in adverse events data",
       "source": "OpenFDA Adverse Events"
     },
-    "timestamp": 1778251968137
+    "timestamp": 1778283486306
+  },
+  "interaction:naproxen||nexium": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between nexium and naproxen detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:augmentin||naproxen": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between augmentin and naproxen detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:aspirin||metpamid": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:ibuprofen||metpamid": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:cipro||metpamid": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:cipro||ibuprofen": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between ibuprofen and cipro detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:atorvastatin||metpamid": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:atorvastatin||cipro": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between cipro and atorvastatin detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:atorvastatin||ibuprofen": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between ibuprofen and atorvastatin detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:aspirin||ibuprofen": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between ibuprofen and aspirin detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:aspirin||cipro": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between cipro and aspirin detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:aspirin||atorvastatin": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between atorvastatin and aspirin detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:cipro||lisinopril": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between cipro and lisinopril detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:aspirin||lisinopril": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between aspirin and lisinopril detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:cipro||nexium": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between cipro and nexium detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:lisinopril||nexium": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between lisinopril and nexium detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:aspirin||nexium": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between aspirin and nexium detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:cipro||tavegil": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:lisinopril||tavegil": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:nexium||tavegil": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:aspirin||tavegil": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:cipro||parol": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between cipro and parol detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:nexium||parol": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between nexium and parol detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:parol||tavegil": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:lisinopril||parol": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:cipro||sudafed": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between cipro and sudafed detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:nexium||sudafed": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between nexium and sudafed detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:sudafed||tavegil": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:lisinopril||sudafed": {
+    "data": {
+      "hasInteraction": true,
+      "severity": "moderate",
+      "description": "Potential interaction between lisinopril and sudafed detected in adverse events data",
+      "source": "OpenFDA Adverse Events"
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:lisinopril||metpamid": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:metpamid||sudafed": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:metpamid||tavegil": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
+  },
+  "interaction:metpamid||nexium": {
+    "data": {
+      "hasInteraction": false
+    },
+    "timestamp": 1778283486306
   }
 }

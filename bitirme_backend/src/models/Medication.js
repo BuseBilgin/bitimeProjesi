@@ -32,12 +32,12 @@ function shouldUseFallback(error) {
 
 class Medication {
   static async create(medicationData) {
-    const { user_id, name, active_ingredient, dosage, frequency, start_date, end_date } = medicationData;
+    const { user_id, name, active_ingredient, dosage, frequency, schedule_time, start_date, end_date, note } = medicationData;
 
     try {
       const [result] = await pool.execute(
-        'INSERT INTO pill_reminder_medications (user_id, name, active_ingredient, dosage, frequency, start_date, end_date) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [user_id, name, active_ingredient, dosage, frequency, start_date, end_date]
+        'INSERT INTO pill_reminder_medications (user_id, name, active_ingredient, dosage, frequency, schedule_time, start_date, end_date, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [user_id, name, active_ingredient, dosage, frequency, schedule_time ?? null, start_date, end_date, note ?? null]
       );
       return result.insertId;
     } catch (error) {
@@ -55,8 +55,10 @@ class Medication {
         active_ingredient,
         dosage: dosage ?? null,
         frequency: frequency ?? null,
+        schedule_time: schedule_time ?? null,
         start_date: start_date ?? null,
         end_date: end_date ?? null,
+        note: note ?? null,
       });
 
       await writeFallbackMedications(medications);
@@ -93,12 +95,12 @@ class Medication {
   }
 
   static async update(id, medicationData) {
-    const { name, active_ingredient, dosage, frequency, start_date, end_date } = medicationData;
+    const { name, active_ingredient, dosage, frequency, schedule_time, start_date, end_date, note } = medicationData;
 
     try {
       await pool.execute(
-        'UPDATE pill_reminder_medications SET name = ?, active_ingredient = ?, dosage = ?, frequency = ?, start_date = ?, end_date = ? WHERE id = ?',
-        [name, active_ingredient, dosage, frequency, start_date, end_date, id]
+        'UPDATE pill_reminder_medications SET name = ?, active_ingredient = ?, dosage = ?, frequency = ?, schedule_time = ?, start_date = ?, end_date = ?, note = ? WHERE id = ?',
+        [name, active_ingredient, dosage, frequency, schedule_time ?? null, start_date, end_date, note ?? null, id]
       );
     } catch (error) {
       if (!shouldUseFallback(error)) {
@@ -118,8 +120,10 @@ class Medication {
         active_ingredient,
         dosage: dosage ?? null,
         frequency: frequency ?? null,
+        schedule_time: schedule_time ?? null,
         start_date: start_date ?? null,
         end_date: end_date ?? null,
+        note: note ?? null,
       };
 
       await writeFallbackMedications(medications);

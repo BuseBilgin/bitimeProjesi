@@ -17,8 +17,10 @@ CREATE TABLE IF NOT EXISTS medications (
   active_ingredient VARCHAR(255) NOT NULL,
   dosage VARCHAR(100),
   frequency VARCHAR(100),
+  schedule_time VARCHAR(10),
   start_date DATE,
   end_date DATE,
+  note TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

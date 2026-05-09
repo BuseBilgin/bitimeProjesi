@@ -1,4 +1,5 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
+import { useFocusEffect } from 'expo-router';
 import {
   View,
   Text,
@@ -34,32 +35,49 @@ export default function MedicationsScreen() {
   const [activeTab, setActiveTab] = useState('Hepsi');
   const [medications, setMedications] = useState(INITIAL_MEDS);
 
-  useEffect(() => {
-    const loadMedications = async () => {
-      try {
-        const token = await getToken();
-        if (!token) return;
+  useFocusEffect(
+    useCallback(() => {
+      const loadMedications = async () => {
+        try {
+          const token = await getToken();
+          if (!token) return;
 
-        const apiMedications = await getMedicationsRequest(token);
-        const mapped = apiMedications.map((med) => ({
-          id: String(med.id),
-          name: med.name,
-          type: `${med.frequency || 'Belirtilmedi'} | ${med.dosage || '-'}`,
-          startDate: med.start_date ? `${med.start_date} tarihinde başladı` : 'Başlangıç tarihi yok',
-          stock: 'Stok bilgisi yok',
-          active: true,
-          image: 'https://cdn-icons-png.flaticon.com/512/883/883356.png'
-        }));
+          const apiMedications = await getMedicationsRequest(token);
+          const mapped = apiMedications.map((med) => {
+            const rawDate = med.start_date ? String(med.start_date).split('T')[0].split(' ')[0] : '';
+            const formattedDate = (() => {
+              if (!rawDate) return 'Başlangıç tarihi yok';
+              const trMonths = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+              const parts = rawDate.split('-');
+              if (parts.length !== 3) return rawDate;
+              return `${parseInt(parts[2])} ${trMonths[parseInt(parts[1]) - 1]} ${parts[0]}'da başladı`;
+            })();
+            return {
+            id: String(med.id),
+            name: med.name,
+            type: `${med.frequency || 'Belirtilmedi'} | ${med.dosage || '-'}`,
+            startDate: formattedDate,
+            rawDosage: med.dosage || '',
+            rawFrequency: med.frequency || '',
+            scheduleTime: med.schedule_time || '',
+            rawStartDate: rawDate,
+            note: med.note || '',
+            stock: 'Stok bilgisi yok',
+            active: true,
+            image: 'https://cdn-icons-png.flaticon.com/512/883/883356.png'
+          };
+          });
 
-        setMedications(mapped);
-      } catch (error) {
-        const message = error instanceof Error ? error.message : 'İlaçlar yüklenemedi.';
-        Alert.alert('Uyarı', message);
-      }
-    };
+          setMedications(mapped);
+        } catch (error) {
+          const message = error instanceof Error ? error.message : 'İlaçlar yüklenemedi.';
+          Alert.alert('Uyarı', message);
+        }
+      };
 
-    loadMedications();
-  }, []);
+      loadMedications();
+    }, [])
+  );
 
   const toggleSwitch = (id: string) => {
     const target = medications.find((item) => item.id === id);
@@ -91,7 +109,16 @@ export default function MedicationsScreen() {
         
         router.push({
           pathname: '/medication-details',
-          params: { id: item.id, name: item.name, image: item.image }
+          params: {
+            id: item.id,
+            name: item.name,
+            image: item.image,
+            dosage: item.rawDosage,
+            frequency: item.rawFrequency,
+            scheduleTime: item.scheduleTime,
+            startDate: item.rawStartDate,
+            note: item.note,
+          }
         });
       }}
     >
