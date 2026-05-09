@@ -111,7 +111,32 @@ export default function MedicationDetails() {
   const scheduleTimeDisplay = selectedHour && selectedMinute ? `${selectedHour}:${selectedMinute}` : 'Belirtilmedi';
 
   const handleSave = async () => {
-    Alert.alert('TEST', 'id=' + id + ' | buton çalışıyor');
+    if (!id) {
+      Alert.alert('Hata', 'İlaç kimliği bulunamadı.');
+      return;
+    }
+    try {
+      setIsSaving(true);
+      const token = await getToken();
+      if (!token) {
+        Alert.alert('Oturum Hatası', 'Lütfen yeniden giriş yapın.');
+        router.replace('/login');
+        return;
+      }
+      await updateMedicationRequest(token, id, {
+        dosage,
+        frequency,
+        schedule_time: `${selectedHour}:${selectedMinute}`,
+        start_date: selectedDate,
+        note,
+      });
+      showToast(() => router.replace('/medications'));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Güncelleme başarısız.';
+      Alert.alert('Hata', message);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleDelete = async () => {
@@ -493,19 +518,19 @@ const styles = StyleSheet.create({
 
   toast: {
     position: 'absolute',
-    bottom: 40,
+    bottom: 100,
     alignSelf: 'center',
     backgroundColor: '#1A9E5C',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    paddingVertical: 14,
+    paddingHorizontal: 24,
     borderRadius: 30,
-    gap: 8,
-    elevation: 10,
+    elevation: 12,
     shadowColor: '#000',
-    shadowOpacity: 0.15,
-    shadowRadius: 10,
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
   },
-  toastText: { color: 'white', fontSize: 15, fontWeight: '700' },
+  toastText: { color: 'white', fontSize: 16, fontWeight: '700', marginLeft: 8 },
 });

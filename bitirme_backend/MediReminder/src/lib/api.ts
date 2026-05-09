@@ -8,14 +8,14 @@ const expoApiUrl = expoHost ? `http://${expoHost}:3004/api` : null;
 const defaultApiUrls = Platform.select({
   android: [
     expoApiUrl,
-    'http://192.168.1.136:3004/api',
+    'http://192.168.1.143:3004/api',
     'http://10.0.2.2:3004/api', // Android emulator
     'http://192.168.1.100:3004/api',
     'http://localhost:3004/api',
   ],
   default: [
     expoApiUrl,
-    'http://192.168.1.136:3004/api',
+    'http://192.168.1.143:3004/api',
     'http://127.0.0.1:3004/api', // iOS simulator
     'http://localhost:3004/api',
     'http://192.168.1.100:3004/api',
